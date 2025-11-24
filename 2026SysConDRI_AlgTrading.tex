@@ -1,0 +1,1244 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line only needs to identify funding in the first footnote. If that is unnecessary, please comment on it.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{balance}
+\usepackage{makecell}
+\usepackage{hyperref}
+\usepackage{url} %for URLs
+\usepackage{listings} %for code
+\usepackage{float}
+
+%% Code listing style set
+\lstset{frame=none,
+%   language=SQL,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color[rgb]{0,0.4,0}, 
+  stringstyle=\color{purple},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+
+\usepackage[letterpaper,%
+            left=0.75in,right=0.75in,top=0.75in,bottom=1in,%
+            footskip=.25in,bindingoffset=0.2in]{geometry}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\setlength{\columnsep}{0.25in}
+
+
+\begin{document}
+
+\makeatletter
+\newcommand{\linebreakand}{%
+ \end{@IEEEauthorhalign}
+ \hfill\mbox{}\par
+ \mbox{}\hfill\begin{@IEEEauthorhalign}
+}
+% \makeatother
+
+\title{Algorithmic Trading Subsystems Data Collection and Transformation Process Automation Using DRI for Machine Learning Modelling and Forecasting\\
+
+% \title{Data Extraction, Transformation, and Loading (ETL) Process Automation, Subsytems Integration for Algorithmic Trading Machine Learning Modelling and Performance Optimization{*}\\
+
+\footnotesize
+% Published: \href{https://arxiv.org/abs/2312.12774}{https://arxiv.org/abs/2312.12774} \\
+% %Note: (Sub-titles are not captured in Xplore and should not be used\\
+% Conference \href{https://2025.ieeesyscon.org}{https://2025.ieeesyscon.org})
+}
+% Target: https://2025.ieeesyscon.org 
+% Reviews 
+
+
+% Reviewer 1: The authors have provided a very mundane description of ETL in the context of algorithmic trading. This is insufficient, as ETL is a reasonably well-established technology. I do not see any specific contribution in the description.
+
+% Reviewer 2: The paper explores how data is extracted, transformed, and loaded in existing solutions for algorithmic trading while automating the ETL process. The state of the art is well structured and concluded by the limitations of existing work (use of cloud resources), which shows the added value of the proposed methodology. The case study is not clearly explained; it does not indicate the type of system. A recommendation can be to restructure the case study section to allow readers to comprehend it better.
+% \href{https://edas.info/showPaper.php?m=1570974892}{https://edas.info/showPaper.php?m=1570974892}
+
+%\thanks{We would like to acknowledge and thank the Post Degree Diploma program in Data Analytics and the Work on Campus programs at Langara College and the Computer Science Department at Okanagan College for supporting our research.}
+ 
+\author{
+
+   %  \IEEEauthorblockN{Nassi Ebadifard}
+   %  \IEEEauthorblockA{\textit{Computer Science} \\
+   % \textit{Okanagan College}\\
+   %  Kelowna, Canada \\
+   % 0009-0002-9087-5259}
+
+   % \and
+   
+    \IEEEauthorblockN{Justin Drenka}
+    \IEEEauthorblockA{\textit{Computer Science} \\
+    \textit{UBCO}\\
+    Kelowna, Canada \\
+    0009-0008-6821-8379}
+
+    \and
+
+    \IEEEauthorblockN{Helana Jaraiseh}
+    \IEEEauthorblockA{\textit{Computing Science} \\
+    \textit{UFV}\\
+    Abbotsford, Canada \\
+    0009-0000-1239-2820}
+
+    \and
+
+    \IEEEauthorblockN{James Midtdal}
+    \IEEEauthorblockA{\textit{Computer Science} \\
+    \textit{Okanagan College}\\
+    Kelowna, Canada \\
+    0009-0005-6312-569X}
+
+    \and
+
+    \IEEEauthorblockN{Kristina Cormier}
+    \IEEEauthorblockA{\textit{Computer Science} \\
+    \textit{Okanagan College}\\
+    Kelowna, Canada \\
+    0009-0004-3783-9704}
+
+    \and
+
+    \linebreakand
+   
+    \IEEEauthorblockN{Youry Khmelevsky}
+    \IEEEauthorblockA{\textit{Computer Science} \\
+    \textit{Okanagan College}\\
+    Kelowna, Canada \\
+    0000-0002-6837-3490}
+    
+    \and
+    
+    \IEEEauthorblockN{Ga\'etan Hains}
+    \IEEEauthorblockA{ \textit{LACL} \\
+    \textit{Université Paris-Est}\\
+    Créteil, France \\
+    0000-0002-1687-8091} 
+
+    \and
+    
+    \IEEEauthorblockN{Albert Wong}   \IEEEauthorblockA{\textit{Mathematics and Statistics} 
+    \\\textit{Langara College}\\
+    Vancouver, Canada \\
+    0000-0002-0669-4352}
+
+    \and
+
+    \IEEEauthorblockN{Brandon Hay}
+    \IEEEauthorblockA{\textit{Computer Science} \\
+    \textit{Okanagan College}\\
+    Kelowna, Canada \\
+    0009-0001-6605-6037}
+
+% \and 
+%     \IEEEauthorblockN{Frank Zhang}
+%     \IEEEauthorblockA{\textit{School of Computing} \\
+%    \textit{University of the Fraser Valley}\\
+%    Abbotsford, Canada \\
+%     0000-0001-7570-9805}   
+}
+
+\maketitle
+
+%%%%%%%%%%%%% AI Guidelines for AI-Generated Content %%%
+
+% see more here: https://conferences.ieeeauthorcenter.ieee.org/author-ethics/guidelines-and-policies/submission-policies/#:~:text=1.,review%20for%20another%20refereed%20publication.
+
+% IEEE Guidelines for AI-Generated Content
+
+% The use of Artificial Intelligence (AI) and large-scale language models (LLMs) in paper submissions is governed by specific rules. 
+
+% Disclosure is Mandatory: The use of AI-generated text or content (including text, figures, images, and code) must be disclosed in the acknowledgments section of the paper. The specific AI system used and the sections where it was used should be identified.
+
+% Editing vs. Content Generation:
+
+% Allowed (with recommended disclosure): Using AI for basic editing, grammar enhancement, or translation is common practice and generally allowed, though disclosure is recommended.
+
+% Prohibited (unless part of analysis): Submissions that include significant, unattributed AI-generated text as the core content of the work are prohibited unless the AI's output itself is the subject of the paper's experimental analysis.
+
+% Author Responsibility: Authors remain fully responsible for the correctness, originality, and veracity of all submitted content, including checking for plagiarism and "hallucinations" from AI tools. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{abstract}
+% A DW is needed to efficiently and continuously prepare data for practical real-time data analysis and forecasting with machine learning (ML) algorithms. This paper discusses extraction, transformation, and loading process (ETL) automation and the critical subsystems integration for algorithmic trading ML modelling and stock market forecasting. Additionally, we discuss a new API designed for direct access to the DW. It opens vast opportunities for performance and data processing time to become critical non-functional requirements. 
+
+This research focuses on the development of an automated data collection and transformation framework for Algorithmic Trading (AT) predictions using machine learning (ML). The implementation of our computational resources is supported by the Digital Research Alliance of Canada (DRAC), Alliance Cloud Connect Pilot. This enables large-scale data processing, storage, and model training. Historical market data and real-time data streams are collected at 5-minute intervals and stored in staging tables and will be aggregated into our model table as 15-min interval data. It is important to ensure that data from multiple sources remain consistent, accurate, and can be reliably reproduced throughout the data pipeline.  
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+Algorithmic Trading, Machine Learning Modelling, System Integration, Performance Optimization
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+\setlength{\fboxrule}{2pt}
+    	\fcolorbox{red}{white}{
+        	\parbox{0.8\linewidth}{
+         -- Youry \\
+         -- maybe Krsitina\\
+        	}
+        }\\
+
+This paper discusses some of the solutions to acquiring complete historical and real-time data sets, along with the significant resources needed for storage and computation, in order to train a machine learning model for short-term Algorithmic Trading predictions. The focus during this phase of the project is on data collection and transformation. The next phase will cover data modeling. For our last phase, we will explore training and testing our machine learning model. 
+
+The Alliance Cloud Connect Pilot allocates 200 core-years on the NIBI-compute system, 20.0 RGU-years on the nibi-gpu system, and 59 TB of project storage on the NIBI storage system for High Performance Computing (HPC). It also allocates 16 VCPU-years, 4 Number of cloud instances, 32 GB of RAM, 7 volumes, 7 snapshots, 2 Floating IP addresses, 60,000 GB of cloud volume and snapshot storage of Cloud allocations on the Arbutus-persistent-cloud system.
+
+After a project is approved and the resources are allocated a few more steps need to be taken to access these resources. One of the first things we needed to do was set up a Secure Shell (SSH) key to access our resources. Another important step was to set up Multi-factor Authentication (MFA), which is used when we sign into DRAC and when you are using the SSH tunnel to access our server. Furthermore, users will have to send an email to DRAC, requesting access to certain resources and specifying the quantity required, and wait for a reply before they can create and connect to their PostgreSQL database. 
+
+
+
+
+%The popularity of ML models and algorithms has increased dramatically over the past decade. They will continue to be used even more, especially with the tremendous success of Large Language Models (LLM) in data analysis \cite{makridakis2023large}. Professionals like researchers and analysts incorporated ML into daily lives. From corporations to individuals, ML is applicable in a wide range of settings \cite{wong2023short}. 
+
+%To improve the performance of the ML algorithms for stock price forecasting, we tried the following approaches to data storage: (1) an OLTP DBMS system for the data collection and (2) following data migration and transformation into a DW (DW) employing an efficient ETL process.
+
+% ML algorithms have been prevalent in solving various problems in the last ten years. Given the recent success of Large Language Models (LLM) \cite{makridakis2023large}, they will continue to see a rise in use. The uses of these algorithms give rise to the many applications that permeate our daily lives. Forecasting stock prices and their potential use in algorithmic trading is one such area \cite{wong2023short}.
+
+% Historical data on relevant features and stock prices must be organized and integrated to allow easy and ongoing access to support the development of ML models for forecasting stock prices. One approach is implementing a two-layer architecture: an Online Transaction Processing (OLTP) database system for daily data collection and a Data Warehouse (DW) for migration, integration, and transformation through an automated and efficient Extract/Transform/Load (ETL) process.
+
+
+% Note that the automated ETL process aims to simplify the system workflow and reduce human errors. It is usually constructed with software and tools to automate data extraction, cleansing, and transformation tasks.  These tasks include collecting data from multiple sources with different DBMS schemas. Data collected is then transformed into a usable form that can be loaded into a data depository such as a DW. Due to the enormous volume of data collected at short intervals in a stock price forecasting project, an automated and efficient ETL process is critical \cite{santosh2024maximizing}. Automation can also include scheduling and monitoring ETL jobs, ensuring timeliness and accuracy of the job runs. Note also that as part of the forecasting system, it is very likely that a BI tool, such as Power BI, Tableau, etc.,  will be required. These tools will rely on a robust ETL system that accurately integrates high-frequency data \cite{tran2021utilizing}.
+
+
+\setlength{\fboxrule}{2pt}
+    	\fcolorbox{red}{white}{
+        	\parbox{0.8\linewidth}{
+        	-- YK: new paper contribution\\
+            -- Helana: new API to the DBMS testing how to train and test data and explain in section IV\\
+            -- Justin: Please work with Section III to explain everything, including design, jobs, access to the servers, and log testing\\
+            -- James: Please test everything and add comments or requests to Justin related to his part.\\
+            -- ALL: Keep in mind, we can reuse 25\% of the previous paper. Please comment out the used text.}
+        }\\
+
+With these resources, we are now able to collect historical data for the past thirty years. Our previous work only included the three previous years. Our new data set will be ten times larger than our previous set.
+
+One of our biggest challenges is related to the fact that many of the previous sets of data are incomplete and they are leading to unexpected results with the machine learning model. We are working on patching the missing values and increasing the size of our data set.\\
+
+The main contributions of this paper are (1) a new approach to data collection from external data sources for XGBoost training, testing, and stock forecasting; (2) the new and historical datasets uploaded to an Oracle/PostgreSQL general purpose DBMS within DRI research project; and (3) the design and testing of a new API for direct access to the DBMS from the core subsystem as part of machine learning (ML) training, testing, and forecasting on the vast datasets collected, transformed, and stored in the DBMS. 
+
+
+
+% This work is a continuation of the previous research projects described in \cite{Dhanjal2004a, Govorov2005, %Khmelevsky2007, Khmelevsky2009swp, Khmelevsky2009gis, Khmelevsky2004_9iAS, Khmelevsky2010d, Khmelevsky2011res, Khmelevsky2011distance, Khmelevsky2011international, Khmelevsky2012automatic, 
+%Khmelevsky2013sourcetosource, Khmelevsky2013strategies, Khmelevsky2014Minecraft, khmelevsky2015hybrid, Khmelevsky2015Minecraft, Khmelevsky2015bot, Khmelevsky2016TenYears, Khmelevsky2016paradigm, Khmelevsky2016reporting, Khmelevsky2016sport, Khmelevsky2016game, Khmelevsky2016GPN, Khmelevsky2016Anew, Khmelevsky2016biometric, Khmelevsky2017Astochastic, Khmelevsky2017utilizing, 
+%Khmelevsky2017gis, Khmelevsky2017gaming, Khmelevsky2017b, Khmelevsky2019state, Khmelevsky2023DW}. 
+
+% The paper is organized as follows: In Section II, we present and analyze existing work on data collection and management issues for algorithmic trading projects and the subsequent transformation into a DW. Section III presents an overview of the data integration project. Section IV presents the ETL automation architecture and design in detail. Section V gives an overview of the automation process and its implementation. The new API implementation for the DW is discussed in Section VI. The paper closes with a discussion on future work and a brief conclusion in Sections VII and VIII, respectively. 
+
+% First, this paper analyzes existing works related to Algorithmic Trading data collection, the following ETL process with data transformation and integration into a predesigned DW interface for the machine learning (ML) tools for ultra-fast stock market changes based on current trades. This paper explains in detail the 3 independent subsystems: integration (data collection subsystem, transferring the collected data in the predesigned DW \textbf{(Cite here)}, and ML subsystem for training and testing algorithmic data. 
+%Then, we describe our last version of the design and development for automatic data collection, which involves using the Flask framework for the user interface implementation and Python scripts for the ETL process. \\
+
+
+\section{Existing Works (from old paper for now)}
+Algorithmic trading systems and ML algorithms for predicting stock price movements have recently gained popularity. Much of the research in this area, including studies by Al-Akashi and Hassan \cite{Al-Akashi2022}, Kolte et al.  \cite{kolte2022}, and Li \cite{li2023}, has focused on refining statistical learning methods to improve prediction accuracy. At the same time, relatively limited attention has been given to the quality and reliability of the data pipeline. 
+
+On the other hand, there has been a concerning neglect in developing an algorithmic trading system that is operationally efficient \cite{Dubey2022}. Data is an essential component of a successful algorithmic trading system. However, The main issues remain in acquiring, transforming, and storing the large datasets required for such a system \cite{Martinez2022}. Many algorithmic trading and ML forecasting projects were limited by the size of the data set in model development and by the lack of system support in their possible implementation of the developed models. As Théate and  Damien \cite{theate2021application} pointed out, training of their ML models is wholly based on ``generating artificial trajectories from a limited stock market historical data set." Therefore, the need to develop a data depository, such as a DW, to support an algorithm trading and stock prices forecasting project is apparent.
+
+For ML model development, the required data for training and testing are collected from different sources. Yulianto concludes in their research \cite{yulianto2019extract} that the heterogeneity of data from various sources can be dealt with by designing an ``Extract, Clean, Conform, and Delivery/Load" process. Capturing heterogeneous data from different sources and storing it in single or multiple data depositories is a common issue for many organizations. In addition, the diversity of database structures is also a big challenge. Azeroual et al.\cite{azeroual2019etl} concluded that implementing an ETL process for data filtering, cleaning, verification, and aggregation could overcome these challenges.
+
+This emerging emphasis on leveraging modern technologies’ computational and data-handling capabilities was also articulated in Oyewale et al.\cite{oyewale2024}. The paper states that market complexity and volatility, along with the volume and speed at which financial data is generated, shape the challenges surrounding stock market analysis. These challenges underscore the need for a system that can handle large datasets in a way that supports accurate real-time predictions in a high-frequency trading environment.
+
+According to Haryono et al., \cite{haryono2020comparison}, ETL and ELT (Extract/Load/Transform) are the primary data processing methods for implementing a DW. Choosing the correct method is problematic because consideration of a company's cost, efficiency, and procedure plays a vital role in determining the implementation of a DW. 
+
+Furthermore, Katari and Rodwal \cite{katarinext} in their paper discuss the inadequacy of traditional ETL processes in handling the volume and inconsistency of the data inherent to financial markets. Their paper outlines the integration of three automated ETL processes that use AI and ML to handle data similar to what we will deal with. They state that harnessing the capability of AI and ML techniques had advantages relating to enhanced accuracy, scalability, speed, and integration, among other benefits. 
+
+Patel et al. compared the features of different tools in their literature review \cite{patel2020progressive}. They outline the development of various categories of ETL tools, some of them are ``code-based, GUI-based, cloud-based, Metadata support, Real-time support, and batch processing".
+
+% According to Michael et al., \cite{michael2020improved}, a properly documented and well-designed ETL system is essential to create a DW. They designed a system that used PowerBI, Microsoft Excel, and Visual Studio 2017 with SQL Server to execute ETL operations. However, a system like this would suffer from non-optimal performance and programming difficulty compared to a custom-coded approach. 
+
+The efficiency of the ETL System is a high priority. According to Biswas et al., \cite{biswas2020efficient}, many organizations use commercially available, GUI-based commercial products as the ETL solution. However, they compared the performance of four code-based ETL tools, Pygrametl, Petl, Scriptella, and ETL, and discovered that custom-coded tools provide better performance and efficiency in specific cases.  
+
+% Ali \cite{ali2018next} created an extendable ETL framework that would address the challenges that Big Data gives rise to. They proposed a user-defined-functions (UDF) Component to address the lack of support for UDFs and the optimizations they discovered in the ETL frameworks they observed.
+
+A prevailing theme that emerges from our research is the critical role of data quality and quantity in generating accurate stock price predictions. However, conceptualization and analyses of systems capable of generating such data pipelines are scarce in the literature. Despite the known importance of data quality, relatively few studies investigate the complete life cycle of data, from collection through ETL processes to the DW and into ML algorithms for forecasting in real-time \cite{zhang2023}.
+
+In the papers we reviewed, we also discovered a lack of use of cloud resources that severely limits the scalability and flexibility of implementing a data depository. Cloud-based ETL systems are considered superior as they provide higher scalability and flexibility for the growing dataset \cite{santosh2024maximizing}. 
+
+Recent research projects have also explored several novel ETL implementation techniques. Wu et al. \cite{Wu2023} propose a system using Apache Airflow in combination with Python scripts to orchestrate and automate ETL tasks. Their framework demonstrates the advantages of scheduling ETL processes at regular intervals, automatically extracting data from financial sources, transforming it to fit a standardized schema, and loading it into a custom DW. While this model operates on a smaller scale and updates less frequently than high-frequency trading systems require, it highlights the benefits of automation for consistency, error reduction, and efficiency in data loading. Our previous analyses on several implementation techniques were documented in \cite{Nassi2023}.
+
+NGOC-BAO-VAN et al. \cite{seo2024artificial} discussed designing and implementing a coffee commodity trading DW to support informed decision-making. After data extraction, the ETL process extracts, cleans, and transforms the data from multiple sources. Visualization and analysis for price trends are performed. The current system could handle structured data successfully but lacked integration with cloud resources, limiting its flexibility and scalability.
+
+% \setlength{\fboxrule}{2pt}
+%     	\fcolorbox{red}{white}{
+%         	\parbox{0.8\linewidth}{
+%          -- AP, Explain what a Data Producer is in the text. \\
+%         	}
+%         }\\
+
+Based on these observations, we choose an object-oriented approach, a well-established and proven method for creating compelling and robust systems, to design an efficient ETL process in this research project. We also use Python scripts,  PostgreSQL DW, and a user interface (UI) to improve the performance of the ETL process.
+
+%\cite{Khmelevsky2011distance, Khmelevsky2011international, hains2012generating,  Khmelevsky2012automatic, Khmelevsky2014Minecraft, Hains2015performance, Hains2015code, Khmelevsky2015Minecraft, Khmelevsky2015bot, Hains2016game, Hains2017game, Khmelevsky2017Astochastic, Khmelevsky2017gaming, Hains2018towards, Hains2019from, Hains2019formal, Khmelevsky2019state, Hains2020TheWTFast, Khmelevsky2020machine, Khmelevsky2021parallel, Khmelevsky2021machine, Wong2021modelling, Wong2021gamers, Wong2022algoritmic} and University of the Fraser Valley (UFV), BC, Canada \cite{Khmelevsky2021Roof, Khmelevsky2017gis}.
+
+%\cite{Khmelevsky2020BCTree, Khmelevsky2020machine, Hains2020TheWTFast, Khmelevsky2021machine, Khmelevsky2021parallel, khmelevsky2021students, lembke2021developing, Wong2021modelling, Wong2021gamers, Khmelevsky2023DW, Wong2022algoritmic, Wong2022MLappl, Wong2022Estimation, Wong2023StockForecasting}. 
+
+
+%%%%%%%%%%%%
+% The Main Section for updates. Please use the commented-out text below to get an idea of what should be used. 
+%You can use ChatGPT or Giminy to generate a draft from the commented-out text, but it must be reviewed, corrected and improved after that. And we must use an appropriate citation (follow the IEEE rules). 
+
+%%%%%%%%%%%%
+
+\section{A New Approach for Data Collection Automation using DRI (Justin and Minami)}
+\\
+% auto collector diagram img
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/newestcollectordiagram.png}
+    \caption{Automated Data Collector Architecture and Workflow Design}
+\end{figure*}
+
+
+\subsection{ Overview of the Auto Data Collector System}
+In order to have accurate short term forecasting, the model needs to always have knowledge of recent market activity. The automated data collection system is designed to provide this by continuously updating the model dataset with current market information. 
+
+
+
+\subsection{ Cloud Deployment and Scheduling}
+
+The automated collector lives on a virtual machine instance within the Arbutus Cloud, part of Canada’s Digital Research Infrastructure (DRI). The system runs on a p4-6gb instance, which provides 4 virtual CPUs, 6 GB of RAM, and a 20 GB persistent disk. Hosting the process in the cloud allows for consistent uptime, simple remote access, and protection against local hardware or power failures. Arbutus Cloud instances offer persistent storage, allowing the collector to run continuously without manual intervention needed. After about fifteen days of collection for 500 tickers, the PostgreSQL database uses roughly 100 MB of space, most of which is initial PostgreSQL table and index metadata rather than data records. This shows that the available storage is more than enough to support years of collected market data. \\
+
+Job scheduling is managed using systemd timers, which run data collection at fixed intervals during standard market hours. This scheduling method ensures no data is missed, and reliable execution in the event of a network or system interruption. Each run creates a status log, forming a history of performance for easy review and debugging. This combination of stable cloud infrastructure with automated scheduling, supports a reliable data pipeline that stays synchronized with current market data and requires minimal operator oversight. \\
+
+As shown in Listing 1, a systemd timer deployed on the VM triggers the collector throughout standard stock market hours.
+
+\begin{lstlisting}[language=bash, caption={Systemd timer for the Auto Data Collector}, label={lst:collector_timer}]
+
+[Unit]
+Description=Auto Data Collector Timer
+
+# Run data collector twice per market hour
+# Time in UTC on the VM
+[Timer]
+OnCalendar=Mon..Fri *-*-* 13:58
+# Market open 09:30 EST
+OnCalendar=Mon..Fri *-*-* 14:30 
+OnCalendar=Mon..Fri *-*-* 14:58
+...
+OnCalendar=Mon..Fri *-*-* 20:58
+# Market closed 16:00 EST
+OnCalendar=Mon..Fri *-*-* 21:30
+
+Persistent=true
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
+\end{lstlisting}
+
+The timer triggers the service shown in Listing 2, which executes the collector script.
+
+\begin{lstlisting}[language=bash, caption={Systemd service that runs the Auto Data Collector}, label={lst:collector_service}]
+
+[Unit]
+Description=AutoDataCollector Service
+# Ensure network is ready before running
+After=network.target 
+
+[Service]
+# Run the script once per timer trigger
+Type=oneshot 
+User=almalinux
+WorkingDirectory=.../AutoDataCollector/
+# Entry script executed by the service
+ExecStart=.../bin/run_collector.sh
+# Retry if the script exits with an error 
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+\end{lstlisting}
+
+
+\subsection{ Data Collection Process }
+
+The automated data collection process is handled by a Python script that runs on the virtual machine described in Section B. The collection script is designed to be run continuously throughout standard trading hours. During each execution, a time window is created which covers the most recent trading period, with a small overlap from the previous run to ensure no data are missed. As shown in Listing 3, the script computes a rolling one-hour EST window that ends twenty minutes before the current time, creating deliberate overlap between runs to ensure that no time interval is ever missed
+\\ 
+\\
+\\
+
+\begin{lstlisting}[language=Python, caption={Time window calculation used by the Auto Data Collector}, label={lst:collector_window}]
+
+# Determine rolling 1 hour time window
+def get_current_time_window():
+    now_ny = datetime.now(ZoneInfo("America/New_York"))
+
+    # End window 20 minutes before now to ensure no missed rows from API
+    end_time = now_ny.replace(second=0, microsecond=0) - timedelta(minutes=20)
+    start_time = end_time - timedelta(hours=1)
+
+    # Store timestamps in EST 
+    return start_time.replace(tzinfo=None), end_time.replace(tzinfo=None)
+\end{lstlisting}
+
+Data is extracted from the FMP API using this time window and the schedule is timed so that each collection happens shortly after new data is available. This keeps the database aligned with recent market activity with a slight lag. 
+
+The script uses lists of tickers so that symbols we want to track could be added or removed at any time and the collector would adjust. This makes the system flexible and easier to maintain as data requirements evolve. Because FMP provides timestamps in EST, the script preserves this format when inserting records into the PostgreSQL database. After retrieving recent data from FMP, the results are written to the database with an “upsert” operation, where entries are updated when already present, and inserted when not present yet. Listing 4 shows the portion of the collector that filters each record into the active time window and writes it to the corresponding ticker table using an UPSERT operation.
+
+\begin{lstlisting}[language=Python, caption={Filtering and UPSERT insertion of 5-minute records}, label={lst:collector_upsert}]
+
+# Fetch, filter, and upsert 5 minute market data into the staging table
+rows = []
+for record in data:
+    ts = parse_fmp_timestamp(record["date"])
+    if window_start <= ts < window_end and record.get("close") is not None:
+        rows.append((
+            ts, 
+            record["open"], 
+            record["high"],
+            record["low"], 
+            record["close"],
+            record["volume"]
+        ))
+
+sql = f"""
+    INSERT INTO {table} (ts, open, high, low, close, volume)
+    VALUES %s
+    ON CONFLICT (ts) DO UPDATE SET
+        open=EXCLUDED.open, high=EXCLUDED.high,
+        low=EXCLUDED.low, close=EXCLUDED.close,
+        volume=EXCLUDED.volume;
+"""
+# Bulk insert all row tuples into DB
+execute_values(cursor, sql, rows)
+\end{lstlisting}
+Running this process with systemd timers on the cloud based VM ensures a stable environment for collection, allowing the historical dataset to always be up to date, accurate, and ready for training the forecasting model.
+
+\subsection{ Database Storage Architecture }
+
+The auto collector stores new market data in a set of staging tables in the database, with each ticker getting its own table. Each table uses OHLCV format (open, high, low, close, and volume), matching the structure provided by our data source (FMP API). These values describe how the market price moved during each time interval, and using the same format as the historical dataset keeps both sources consistent. \\
+
+Every entry in the staging tables represents one 5 minute interval and is identified by its timestamp. Listing 5 shows the structure of a typical staging table, where the timestamp acts as the primary key and ensures that overlapping collection windows do not introduce duplicates.
+\begin{lstlisting}[language=SQL, caption={Example staging table used for a single ticker}, label={lst:staging_table}]
+-- Staging table for a single ticker (AAPL)
+CREATE TABLE IF NOT EXISTS market.aapl (
+    ts     TIMESTAMP PRIMARY KEY,
+    open   DOUBLE PRECISION,
+    high   DOUBLE PRECISION,
+    low    DOUBLE PRECISION,
+    close  DOUBLE PRECISION,
+    volume BIGINT
+);
+\end{lstlisting}
+Choosing the timestamp as the primary key allows the collector to easily update rows when collection windows overlap, and separating each ticker into its own table avoids write conflicts if many symbols were to be updated at the same time. This simple layout makes the storage layer easy to maintain and reliable for continuous data collection. \\
+
+The staging tables serve as the first stop for new data. Their role is to hold recent market information in the same structure as the historical dataset. In a later step of the pipeline, both the historical data and the auto collected staging data are combined into a single model table used for training the forecasting model. That merging process is described in section: todo: add correct section here
+
+\subsection{ Testing and Logging }
+Testing and logging are important parts of making sure the auto collector captures 100\% of the  expected market data for each market day. The system includes a daily coverage test that runs automatically about one hour after the market closes. Its job is to check that every 5 minute interval during standard trading hours was collected for every ticker. Listing 6 shows the core logic of the daily coverage test, which verifies that the expected number of five minute intervals was collected for each ticker.
+\begin{lstlisting}[language=Python, caption={Core logic of the daily coverage test}, label={lst:coverage_test}]
+# Single ticker coverage between two dates
+def coverage_for_symbol(conn, symbol, start_date, end_date):
+    expected_per_day = expected_intervals_per_day()
+    total_expected = 0
+    total_actual = 0
+
+    table = format_table_name(symbol)
+    current = start_date
+
+    with conn.cursor() as cur:
+        while current <= end_date:
+            # Skip weekends
+            if current.weekday() >= 5:
+                current += timedelta(days=1)
+                continue
+
+            # Intervals for one trading day
+            total_expected += expected_per_day
+
+            # Count found rows for that day
+            open_dt  = datetime.combine(current, time(9,30)).replace(tzinfo=None)
+            close_dt = datetime.combine(current, time(16,0)).replace(tzinfo=None)
+
+            cur.execute(
+                f"SELECT COUNT(*) FROM {table} WHERE ts >= %s AND ts < %s",
+                (open_dt, close_dt),
+            )
+            total_actual += cur.fetchone()[0]
+
+            current += timedelta(days=1)
+
+    # Return coverage percentage
+    return (total_actual / total_expected) * 100 if total_expected else 0
+\end{lstlisting}
+
+The test knows the start date of collection and adjusts its expectations as the days go on, so it continuously logs a coverage percentage for each ticker. This helped us catch several issues early, such as missing intervals, FMP API changes, and unexpected execution times. Finding these problems quickly made it much easier for us to ensure the dataset is complete and clean. \\
+
+In addition to the coverage test, the collector writes a status log for every scheduled run, noting when the job started, when it finished, how long it took and whether any errors occurred. The coverage test also records its results in the logs. Together, these tests and logs provide essential visibility into the system's performance and ensure its data remains accurate over time.
+
+
+ 
+%The following steps will relate to the data pre-aggregation, drastically improving the ML performance of the integrated system.\\  
+
+% For the 1st testing prototype in the Cloud, we used Oracle APEX to test data collection and cleaning \cite{Nassi2023}. The 2nd system's prototype was built using Compute Canada research resources (now this is The Digital Research Alliance (DRA) of Canada\cite{alliancecan.ca}). We plan to use the DRA Digital Research Infrastructure (DRI) for production performance training. This infrastructure offers an array of cutting-edge tools and resources that are crucial for enhancing the scope and impact of our research. The DRA supports researchers across various fields by providing access to high-performance computing, data storage, and specialized software platforms that facilitate large-scale data analysis, computational modelling, and collaborative research. In support of our initiative, our team has been honoured to be selected as part of the DRI Champions Program \cite{drichamp}. This includes a research grant for the period of 2024-2025 to support our research, disseminate information about DRI Canada, and train researchers on how to use DRI resources for research projects in Canada.
+
+% In the last prototype, we used scripts created using the Python programming language and a PostgreSQL DW (which will be moved to the DRI Cloud later) to test the effectiveness of ML models by the community and beta-testers. The 4th system's prototype is hosted on GitHub\cite{AlgTrGithub2024} for source code version control, development and user documentation. We use  Financial Modelling Prep (FMP) \cite{financialModelingPrep} for the updated data. We plan to move our project to PostgreSQL DW in a cloud with a data storage size of up to 12 TB.  The data collection is executed daily via cron jobs. Finally, the data is processed and modelled on a designated workstation with a powerful GPU. Still, the next step is to use available Cloud Computing and multiple GPU processing resources.
+% %%Added by Dolcy
+
+% \begin{figure*}[ht]
+% \centering
+% \includegraphics[width=\textwidth]{images/IntegrationFlow}
+% \caption{Integration of the Algorithmic Subsystems Designed and Implemented in Initial Project Prototypes \cite{AlgTrGithub2024, Wong2022AlgoritmicTrading, Wong2022Estimation}}
+% \label{fig: Integration Flow}
+% \end{figure*}
+
+% % This section presents the integration of ETL and dataflow to facilitate the collection, processing, storage, and visualization of financial data for forecasting stock prices.
+% The data flow has been summarized in Fig.~\ref{fig: Integration Flow} using the Government of Canada's DataGuide\cite{dataArchitectureModel} as our reference model for organizing the subsystem components. Financial data is collected from different API sources and processed using a custom-built ETL pipeline with Python scripts. Firstly, data is pulled from the APIs and transformed to fit the DW structure. The transformed data is loaded into the DW, which an ML model uses for predictions. These predictions are also stored in the DW. The DW is linked to a UI that allows users to configure ETL process settings and visualize data.
+
+% The project's current version integrates various subsystems developed over the past three years to form a comprehensive financial data analysis and forecasting solution. The integration of these components is aimed at optimizing data collection, improving analytical capabilities, and automating predictive modelling processes. These subsystems include:
+
+% \begin{itemize}
+%     \item The Data Collection and ETL subsystem is responsible for extracting the latest financial data from API endpoints, transforming it into the required format, and loading it into the DW.
+%     \item The DW subsystem uses a star schema for efficient data analysis and easy access for developing ML models.
+%     \item A web-based interface that connects with the Data Collection subsystem for managing automation configurations and the DW for accessing data for analysis and visualization.
+%     \item A predictive model subsystem fetches updated financial data from the DW, producing and storing price forecasts. Automation triggers model updates at specified intervals.
+% \end{itemize}
+
+% Below are explanations of the processes involved in each integrated subsystem, forming a unified financial data management and forecasting system.
+
+% \subsection{Data Collection Automation and Control}
+
+% The Data Collection and ETL subsystem forms the project's backbone by ensuring that financial data is regularly collected and adequately prepared for the forecasting tasks. This process involves collecting the data, transforming it according to our requirements, and loading it into the database.
+
+% Automating this ETL process ensures that the warehouse consistently updates financial data with minimal manual intervention, facilitating more accurate and timely analysis. The following section will describe the design and automation in further detail.
+
+% \subsection{General Purpose Database for the Data Sets in DRI}
+
+% The DW subsystem is designed to provide efficient data storage and retrieval for complex analytical tasks. It employs a star schema design, ideal for large-scale data analysis \cite{SysconPaper12024ETLAutomation}. The star schema consists of the following components:
+
+% \begin{itemize}
+%     \item Fact Table: The central table stores transactional data. This table holds numeric performance data that analysts and ML models can aggregate and analyze.
+%     \item Dimension Tables: Dimension tables, which store descriptive attributes, surround the fact table. These tables allow for detailed data slicing and dicing, enabling flexible querying and reporting.
+%     \item De-Normalization and Pre-Aggregation: To optimize query performance, the design uses de-normalized tables that avoid the need for complex joins. Pre-aggregated data, such as daily or monthly summaries, is stored to speed up common analytical queries. This approach enhances performance by reducing the processing time for frequently accessed data.
+% \end{itemize}
+
+% This schema design allows for fast and efficient querying, enabling ML models and human analysts to retrieve relevant data in real time. Additionally, the DW is the central repository for all historical data, supporting analytical tasks and predictive modelling.
+
+% \subsection{User Interface}
+
+% The UI is a critical component that facilitates user interaction with the system, providing access to data collection configurations and analysis results. The interface is built using the Flask web framework, ensuring it is lightweight, secure, and easily extendable.
+
+% \begin{itemize}
+%     \item User Authentication and Authorization: The UI is built with secure authentication and role-based authorization systems, ensuring only authorized personnel can access specific functions. Users are assigned roles, such as:
+%     \begin{itemize}
+%         \item Administrators: Responsible for configuring and managing the data collection automation process. They have full access to the system’s settings and operations.
+%         \item Data Analysts: Can access the DW for analysis, view historical financial data, and generate graphs of financial trends and forecasts.
+%     \end{itemize}
+%     \item Data Collection Management: Administrators can manage and configure the automation settings for the data collection process. This includes defining the frequency of data extraction, selecting relevant data sources, and managing data quality.
+%     \item Data Visualization and Reporting: Data analysts can visualize historical financial data and predictions generated by the ML model. Interactive graphs and charts are integrated into the UI to display trends, forecasts, and key performance indicators, enabling informed decision-making.
+% \end{itemize}
+
+% The UI bridges the gap between the data subsystems and end-users, providing an intuitive platform for interacting with the system and deriving actionable insights.
+
+
+
+
+
+
+% The ML Model analyzes historical financial data and generates price predictions. Over multiple iterations of model evaluation and testing, the team at Langara College selected XGBoost as the ML algorithm of choice \cite{wong2023short}. This decision was based on XGBoost's proven effectiveness in time-series forecasting and its ability to handle large datasets accurately.
+
+% Key components of the ML model include:
+
+% \begin{itemize}
+%     \item Data Access: The model connects to the DW to access the most recent financial data. This data is processed and used to train the model and generate forecasts.
+%     \item Model Training and Evaluation: The ML model is trained using historical data stored in the DW. XGBoost is employed to build a robust, scalable model that predicts stock prices. The model undergoes continuous evaluation to ensure its performance remains high, with periodic retraining based on new data.
+%     \item Forecasting and Automation: The model generates predictions at specified intervals once trained. The automation process ensures that predictions are updated regularly without manual intervention, providing real-time forecasts based on the latest available data.
+%     \item Data Storage: The generated forecasts are stored in the DW for visualization, reporting, and future reference. This integration allows analysts and other systems to access the predictions and incorporate them into their decision-making processes.
+% \end{itemize}
+
+% This subsystem combines advanced ML techniques with real-time data access to provide highly accurate, automated predictions about market trends and financial instrument prices.
+
+
+\section{API Architecture, Design and Testing to DRI DBMS}
+
+\subsection{Machine Learning Training and Testing setup to run against of DRI Database}
+
+\setlength{\fboxrule}{2pt}
+    	\fcolorbox{red}{white}{
+        	\parbox{0.8\linewidth}{
+         -- Helana and Kristina, please try to connect to database and run on Jupyter Notebook or Hub \\
+         -- and explain how it was done here. You can add a diagram
+        	}
+        }\\
+\subsection{API Architecture, Design and Testing to DRI DBMS}
+\setlength{\fboxrule}{2pt}
+    	\fcolorbox{red}{white}{
+        	\parbox{0.8\linewidth}{
+        	
+            -- Helana: new API to the DBMS testing how to train and test data and explain in section IV\\
+           }
+        }\\
+
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Algorithmic Trading ELT-Automation-Architecture.png}
+\caption{Automated ELT Architecture of the Algorithmic Trading System}
+\label{fig: ETL}
+\end{figure*}
+%
+Follow ELT Process, instead of ETL.\\
+
+From Financial Model Prep to Staging Tables: Extract raw stock, index, bond, and commodity data from Financial Model Prep API. Load raw data to individual staging tables. Used automatic collector described in Section III.\\
+            
+ From Staging Tables to Model Table: Extract, transform, and merge data and store in model table. Used a Jupyter Notebook.\\
+ 
+ From Model Table to Model / User Interface: Connect Model to Table; the Model will query Table to fetch training data. User Interface will be built in the future. \\
+ 
+From From Staging Tables to Model Table in Detail: A Jupyter Notebook will extract the raw data from the staging tables, merge and transform the data and load them into a single table for model training.\\
+
+Data Cleaning: FMP's raw data contains missing entries and duplicates. The Jupyter Notebook script creates a dataframe for each dataset, removes duplicates, and uses an *** appropriate imputation method (needs further research) to fill in the missing time entries. \\
+
+Data Formatting: The extracted data must be formatted to align with the DW schema, including proper conversion of date formats, numerical precision, and standardization of measurement units (e.g., currency, percentages). \\ 
+
+Data Transformation: During this process, only categorical values are transformed. Numerical values are normalized during the model training process. 
+
+The ETL subsystem was designed to allow us to use multiple endpoints from the FMP API to fetch the required data and fit it into our DW schema. The ETL process design is described in Fig.~\ref{fig: ETL}.
+
+%\begin{itemize}
+    %\item Extracting Data: 
+    % Financial data from various markets: stocks, stock indices, commodities, and bonds extracted through the Financial Model Prep API. Python scripts are used to automate the data extraction, ensuring real-time or scheduled retrieval of the most up-to-date information from the relevant sources.
+    %\item Transforming Data: Once the data is extracted, it is transformed to meet the specific requirements of the DW schema. This transformation involves several sub-steps:
+    %\begin{itemize}
+        %\item \textit{Data Cleaning:} 
+        % Raw data often contains errors, inconsistencies, or missing values. The transformation process includes cleaning the data by removing or correcting these issues.
+        %\item \textit{Data Formatting:} 
+        % The extracted data must be formatted to align with the DW schema, including proper conversion of date formats, numerical precision, and standardization of measurement units (e.g., currency, percentages).
+        %\item \textit{Data Transformation:} 
+        % During the transformation process, additional calculated fields, such as price averages, volatility measures, or moving averages, may be added to enrich the dataset and support more detailed analysis.
+    %\end{itemize}
+    %\item Loading Data: 
+    % After transforming the data, it is loaded into the DW. The loading process ensures that the data is placed in the appropriate tables within the schema, making it available for querying and analysis.
+%\end{itemize}
+
+
+% We model and design an ETL system using PHP, GitHub, Ionos, MySQL, and HiDrive.
+
+% %%%%%%%
+% \subsection{Project Prototype Design}
+% %%%%%%%%%
+% A simplified project prototype Use Case diagram is shown in Fig.~\ref{fig: Use Case}, where data analysis is performed on both OLTP and DW DBMS systems.
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=0.5\textwidth]{images/Use-Case-Diagram.png}
+% \caption{A Simplified Project Prototype Use Case Diagram}
+% \label{fig: Use Case}
+% \end{figure}
+% \url{https://online.visual-paradigm.com/share.jsp?id=323931393630342d33}
+
+
+% The prototype design consists of the following components (see Fig.~\ref{fig: Prototype Design}):
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=\columnwidth]{images/Deployment-Diagram.png}
+% \caption{Project Prototype Design}
+% \label{fig: Prototype Design}
+% \end{figure}
+% \url{https://online.visual-paradigm.com/share.jsp?id=323931393630342d31}
+
+% \begin{itemize}
+%     \item Data Collection from various public and commercial sources. 
+%     \item Source code and the development documentation are stored on Github\cite{githubAlgorithmicTrading}.
+%     \item MySQL OLTP and DW instances to store data and prepare for the forecasting using ML algorithms (see our initial forecasting results here: \cite{wong2023short}, \cite{Wong2023}).
+%     \item HiDrive to store extracted data and internal documentation.
+%     \item Server for data processing and modelling (Cron jobs would be used in the future for data extraction and processing on a cloud server).
+% \end{itemize}
+
+
+% %%%%%%%
+% \subsection{Project ETL, Automation Use Case Design and Basic Processing Flow}
+% %%%%%%%%%
+
+% During the Project Prototype design and implementation, we discovered that in the context of ETL, the Data Analyst is the primary actor rather than the Developer and the Automation manager
+% (see Fig.\ref{fig: Use Case})
+% . The system is primarily designed to serve the data analyst's goals. The Developer writes the source code, and the Automation manager maintains the Automatic data collection and ETL. The Analyst extracts data from HiDrive and MySQL for use.\\
+
+% The discovered actors and their roles are shown in Fig.~\ref{fig: Use Case}:
+%     \begin{itemize}
+%         \item \textbf{Developer} --- A user who creates software applications using programming languages.
+%         \item\textbf{Automation Manager} --- A user who sets up and manages the automated data collection and processing system.
+%         \item\textbf{Data Analyst} --- A user who uses the processed data for analysis.
+%     \end{itemize}
+
+% For the data collection and processing, we have conceived a flow for data collection from a PHP file hosted on Ionos.com. First, The Automation Manager sets up the automatic cron jobs on the Ionos and configures the system to run the PHP file and data processing scripts automatically at specified intervals. The PHP file and data processing scripts are designed and tested for accuracy and performance. Subsequently, this data is stored within a MySQL database, which is also hosted on Ionos. For this purpose, the data analyst creates scripts to train and model the data, using JupyterLab, the ultimate objective of processing and modelling the data to enable comprehensive analysis. The MySQL database is designed to handle the expected amount of data and is backed up regularly. The processed data is then stored in a designated location in the HiDrive for easy access and collaboration. The HiDrive is accessible and has sufficient storage space for the documentation, code, and data. Finally, the data analyst can access the processed data and perform analysis. Central to this is the imperative for complete automation of the data collection process, encompassing the data itself, the underlying code, and associated documentation. We decided that GitHub, a central repository and version control platform, will be used for project management and collaborative development. Overall, the system is designed with security, appropriate access controls, and protection against data breaches.
+
+% We have also identified and mitigated a few expected issues. 
+% Suppose the PHP file or data processing scripts encounter errors during execution. In that case, the system triggers an email notification promptly dispatched to the Automation Manager, who assumes responsibility for resolving these issues. In instances where updates or modifications to the processed data become requisite, the Developer, as the key custodian of the codebase, undertakes necessary changes to the scripts and configures the system for their re-execution.
+% Additionally, when there is a demand for integrating new data sources into the system's framework, The Developer updates the PHP file, and the Automation Manager adjusts the database schema to accommodate the new data inputs. Moreover, a cloud-based password manager, like RoboForm\cite{roboform}, is judiciously employed as a robust safeguarding mechanism to enhance the system's security and safeguard the data. This proactive measure ensures the confidentiality and integrity of the sensitive data within the system.
+
+% The project Use Case diagram (Fig.~\ref{fig: Use Case}) demonstrates the iterative and incremental approach to software development, where the system is developed and tested in small iterations and where potential risks and issues are identified and mitigated throughout the development process. It also focuses on collaboration and version control, where the code, documentation, and data are stored in a central location for easy access and collaboration.
+
+%%%%%%%%
+\section{The Automation Process Implementation}
+%%%%%%%%
+
+\setlength{\fboxrule}{2pt}
+    	\fcolorbox{red}{white}{
+        	\parbox{0.8\linewidth}{
+         -- James, please try to describe here the automation process implementation, and even add the code \\
+        	}
+        }\\
+
+        % Data collection script interactions
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/Automation Process.png}
+    \caption{Integration of Automated Data Collection Scripts}
+\end{figure*}
+
+Fir's crontab tool has been disabled and Fir has minimum requirements on job length. The virtual machine on Arbutus Cloud provides access to scheduled tasks, which is necessary to run our scripts at regular intervals. The disjoint databases and short runtime lengths of many of our scripts require some of the work to be done on Arbutus Cloud and on local (personal) machines, and thus some form of synchronization is required. Therefore, we must automate the process of updating Fir with current stock information. 
+
+\subsection{Historical Stock Data Collection}
+The FMP API, configured to retrieve stock information across 15 minute intraday intervals, will return a maximum of 10 days of data for one stock symbol, per API call. Due to the large number of API calls required, a script is needed to automate data collection across the desired date range. Our approach is to run a Python script on our local machine. We begin by defining a start date, end date, and stock symbols. Then, for each stock symbol, we have an inner loop which iterates through the target range calling the API with distinct 5-day windows. Each time the inner loop terminates, the per-stock results are saved locally into a CSV file named with the corresponding stock symbol. The outer loop terminates when all stock symbols have been processed. The resulting CSV files become input for a script which checks for missing entries. This Python script loads each file based on the stock symbols defined in the data collector. Exclusion dates are inserted into a list (holidays, etc.) so as to not trigger false alerts. The start date, end date, opening time, and closing time are also defined, matching the definitions in the historical data collection script. Expected 5-minute intervals are calculated, then actual results are then compared against the generated list. Any missing values are logged to the console for the operator to investigate. To confirm the API results were correct, missing entries are double-checked with a manual API call. Occasionally, FMP does not have data for an interval but it is critical to validate the missing data is due to FMP's data collection process and not a connection issue. The raw data CSV's are now ready to be patched (missing entries filled with previous entry's information) and/or uploaded to the database. 
+
+\subsection{CSV File to Database Upload Automation - Brandon}
+The CSV stock data can now be inserted into our Fir hosted database using automated python scripts. Before attempting to insert data into the database an SSH Tunnel needs to be made to Fir so the database is accessible to us. The first stock CSV file is read into memory and is cast into the appropriate variable format for the database. As using multiple INSERT commands can take over 10 minutes per stock due to overhead, we take advantage of PostgreSQL's COPY command which acts as a bulk insert and takes approximately 5 seconds per stock. The script then iterates throught the rest of the stock files until all data has been copied into their respective tables. 
+
+\subsection{Current Stock Data Collection}
+In order to update the database with the latest stock information, the FMP API  must be called continually throughout the day. The virtual machine on Arbutus Cloud, running a Bash shell on AlmaLinux, provides the mechanism through which our Python script is automated. A systemd timer is configured to run every 30 minutes, covering 4:00 am to 8:00 pm Eastern Standard Time, Monday through Friday. The timer's service executes a Bash script, which performs the following activities in this order: activate the Python virtual environment, initialize environment variables (API key and database connection), run the Python data collection script described in Section III. 
+
+\subsection{Database Synchronization (Partially Implemented)}
+We began by installing firewalld to manage port access. After opening the default PostgreSQL port, we generated a public and private SSH key pair and saved them locally on the Arbutus VM. Next, we used ssh-copy-id to copy our public SSH key to Fir. We are then able to open a secure SSH tunnel to the Fir database, using a non-dedicated port on the Arbutus VM as our local port. Finally, once the port-forwarding is setup is complete, we can use the Arbutus terminal to run psql using the now open ssh tunnel. This completes the connection and we have command line access to the PostgreSQL database on Fir. A downside to this method is the two-factor-authentication required for every Fir database access. Future work for this section include discussions with the Digital Research Alliance of Canada to resolve the two-factor-authentication issue. Preferably, we would like to connect Arbutus to Fir exclusively through internal DRAC tools or networks, as opposed to SHH which always requires Duo authentication. The script to automatically insert rows has not yet been written, but database access has been established which opens the possibility of fully automated database synchronization.
+
+\subsection{Transformation - Brandon}
+The raw data in the staging area must be transformed into a single table, appropriate for the ML model. This table can only consist of numerical data as machine learning models are highly mathematical in nature. The number of stocks in the staging area requires a repeatable transformation process. 
+
+The raw data will be queried from the database and sent to Arbutus Cloud for Processing with a Python script. Although processing could be done on the Fir database using PL/pgSQL, it would be much harder to accomplish without the extensive python libraries that make data transformation easy. These libraries include pandas, holidays, and yfinance. First, sector data is queried from yfinance for each stock and stored in a table. Each stocks data is read in from the table and can now be joined to the sector data using pandas. Now commodity, bond and index data can be read in and joined to each individual stock on the date column. The holidays library allows us to retrieve a list of holiday dates so we track the holidays to see how pre and post holidays 
+
+
+
+% Pandas provides dataframes which act as easily and quickly mutable table. The holidays library allows us to retrieve a list of holiday dates within a given range so we can use this data for the ML model. 
+
+% \subsection{\textbf{ETL Design Model}}
+% Simplified data groups for the analysis and forecasting collected from different sources are shown in Fig.~\ref{fig: Data Groups}. The base class ``Companies" contains symbol, name, sector and industry attributes. The sub-classes ``Stock" and ``Commodities" extend the ``Companies" class and add the price and volume attributes. The date class contains the capture timestamp of the ``Companies" class.
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=0.45\textwidth]{images/Data-Groups.png}
+% \caption{Simplified data groups for the analysis and forecasting}
+% \label{fig: Data Groups}
+% \end{figure}
+% \url{https://online.visual-paradigm.com/share.jsp?id=323931393630342d32}
+
+
+% \subsection{\textbf{Data Extraction, Transformation and Loading (ETL) Process}}
+
+% As discussed above, in support of the modelling process, data must be collected from various open and commercial sources and then organized to (1) create automated ETL routines for regular collection of data and (2) develop a data store for supporting the research and model development that is ongoing. Therefore, the ETL process for financial data is an integration and transformation process of data used for extracting data from various sources, transforming it into a homogeneous format, and then loading it into an OLTP DBMS or a DW.
+
+% As discussed above, to support the modelling, data from various open and commercial sources must be collected and organized to (1) develop automated data collection and transformation (ETL) routines to collect the necessary data regularly and (2) develop a data depository, to support the ongoing research and model development efforts. Therefore, the ETL process for Stock-commodities-related Data is a data integration and transformation process used to extract data from various sources, transform it into a desired format, and load it into a destination system, such as a database or a DW \cite{Hendayun2021}. 
+
+% During the data extraction phase, the PHP code sends requests with parameters such as Date, Volume, Open, Close, High, and Low to the financial modelling preparation API. The extracted data is then transformed by filtering redundant or unwanted data and converting data types to match the target database's format. 
+
+% In the data extraction phase, the requests are sent to a financial modelling preparation API endpoint through the PHP code with appropriate parameters such as Date, Volume, Open, Close, High, and Low. Once the data are extracted, they are transformed to fit the target database by filtering the repetitive or unwanted data and converting the data types. 
+
+% \begin{table}[ht]
+%     \centering
+%     \caption{ETL Load Plan for Data Collection and Processing}
+%     \begin{tabular}{|l|p{4cm}|}
+%     \hline
+%     \textbf{Field} & \textbf{Description} \\
+%     \hline
+%     Name & ETL for Data Collection and Processing \\
+%     \hline
+%     Description (Optional) & Load plan for collecting data through x, storing it in MySQL, and processing it for analysis using Github and Ionos. \\
+%     \hline
+%     Load Plan Type (Optional) & Source Extract and Load (SDE, SIL and PLP) \\
+%     \hline
+%     Source Instances (Optional) & Select MySQL as the source instance for data extraction. \\
+%     \hline
+%     \end{tabular}
+%     \label{tab:etl_load_plan}
+% \end{table}
+
+% In the final stage, the data that has been transformed is then loaded into the MySQL database through \cite{ionos.com}\cite{wong2023short}. To maintain database accuracy and keep it up to date, we programmed cron jobs that run every morning for this task.
+
+% \subsection{Commodities-ETL Process Workflow Description}
+
+% The PHP script retrieves financial data from an external API and stores it in a MySQL OLTP database. The script is designed to connect to the database, retrieve the data from the API, and insert data into the appropriate DBMS tables. The retrieved data consists of stock prices for the Dow Jones, S\&P, NASDAQ, Treasury bonds, gold prices, and crude oil prices between January 1, 2019, and December 31, 2022.
+
+% The script defines an array of URLs to retrieve the data from the external API, each corresponding to a specific financial instrument. Then, it loops over this array to retrieve the data using URLs. In addition to the retrieved data from the API, the script defines an array of dates and retrieves additional data for the specified date range.
+
+% However, one potential issue with the script is that it does not handle missing data or errors that may occur during data retrieval and insertion. It is also unclear how the script fills in missing data, which could lead to incomplete or inaccurate data being stored in the MySQL database.
+
+% The script is divided into two parts: (1) The first part retrieves data using an API that provides data every 15 minutes. (2) The second part of the script appears to run to fill in gaps for missing data, although the details of how this is done are unclear.
+
+% The script is a basic implementation for retrieving and storing financial data. Still, additional error handling and better documentation on how missing data is handled and filled in (future work) could benefit it.
+
+% \subsection{Commodities-ETL Process code samples}
+
+% \begin{lstlisting}[language=PHP, label=Creating the connection]
+% $mysqli=mysqli_connect(
+%     <databse_hosting_name>.hosting-data.io,
+%     <database_user>, <password>, <databsae_name>);
+
+% if(mysqli_connect_errno()) {
+%     tabprintf("Connect failed: %s\n'',
+%     mysqli_connect_error());
+%     exit();
+% }
+% \end{lstlisting}
+
+% \textbf{Creating tables:}
+% The script first creates tables in the database for each company in the \$companies array. The
+% table name is constructed by concatenating the company name with the ``-STOCKS" suffix. The table has columns for date, open, high, low, close, and volume; the date column is the primary key.
+
+% %$companies=array("AAPL", ``MSFT", ``GOOGL", ``AMZN", ``TSLA", ``NVDA", ``XOM", ``META", ``JNJ", ``JPM", ``WMT", ``CVX", ``BAC", ``BABA", ``KO", ``PFE", ``DIS", ``CSCO", ``MCD", ``VZ", ``NFLX", ``AMD", ``T", ``BA", ``IBM", ``INTC", ``C", ``GE", ``F", ``PLTR");  
+% \begin{lstlisting}[language=SQL, label=Creating tables]
+% foreach($companies as $com){
+%     $sql="CREATE TABLE IF NOT EXISTS `".$com."-STOCKS`"."
+%         (`Date` TIMESTAMP,
+%          `Open` Decimal(8,2),
+%          `High` Decimal(8,2),
+%          `Low` Decimal(8,2),
+%          `Close` Decimal(8,2),
+%          `Volume` Decimal(30,0),
+%          PRIMARY KEY (Date));";
+%     $mysqli->query($sql); 
+% \end{lstlisting}
+
+% \textbf{Retrieving stock data:}
+%  Stock market data from the financial modelling preparation API is fetched using curl for each company in the table. The API endpoint URL is constructed by using the company name and the API key as a query parameter. The API returns data in JSON format, which is then decoded into an array.
+
+% \begin{lstlisting}[language=PHP, label=Retreiving data]
+% $des_arr=array(
+%                 'Date'=> array(), 
+%                 'Open'=> array(), 
+%                 'High'=> array(),
+%                 'Low'=> array(),
+%                 'Close'=> array(),
+%                 'Volume'=> array()); 		
+% $ch = curl_init(
+% "https://financialmodelingprep.com/api/v3/
+%     historical-chart/15min/'' . $com .
+%     "?&apikey=52666840603622de4f9192bcaaa1ce13"
+%     );
+% curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+% curl_setopt($ch,CURLOPT_BINARYTRANSFER, true);
+% $output = curl_exec($ch);
+% $stock =json_decode($output,true);
+% $keys=array_keys($stock);
+
+% for($i=0;$i<count($keys);$i++){
+%     $stock_arr['Date'][$i]=
+%         strtotime($stock[$i]['date']);
+%     $stock_arr['Open'[$i]=$stock[$i]['open'];
+%     $stock_arr['High'[$i]=$stock[$i]['high'];
+%     $stock_arr['Low'[$i]=$stock[$i]['low'];
+%     $stock_arr['Close'][$i]=
+%         $stock[$i]['close'];
+%     $stock_arr['Volume'[$i]=
+%         $stock[$i]['volume'];
+% }
+% \end{lstlisting}
+
+% \textbf{Populating tables:}
+% To insert the stock-market-related data into the database, the script then loops through the array of stock data, and using that, it constructs an SQL query to insert the data into the corresponding table in the database.
+
+% \begin{lstlisting}[language=PHP, label=Populating tables]
+% for($z=0;$z<count($keys);$z++) {
+%     $sql="INSERT IGNORE INTO `".$com."-STOCKS`" . "
+%     (`Date`, `Open`, `High`, `Low`, `Close`,` Volume`) 
+%     VALUES ('".
+%     date('Y-m-d H:i:s',$stock_arr['Date'][$z])."',".
+%     $stock_arr['Open'][$z] .",".
+%     $stock_arr['High'][$z] .",".
+%     $stock_arr['Low'][$z] .",".
+%     $stock_arr['Close'][$z] .",".
+%     $stock_arr['Volume'][$z] .");";
+    
+%     $mysqli->query($sql);
+%     }
+% } 
+% \end{lstlisting}
+
+% \subsection{First implementation}
+
+% \setlength{\fboxrule}{2pt}
+%     	\fcolorbox{red}{white}{
+%         	\parbox{0.8\linewidth}{
+%          -- 
+%         	}
+%         }
+       
+% \section{Data ETL Process Automation}
+
+% \subsection{Previous iteration}
+% We collected and stored data in the OLTP DBMS and prepared data for transformation into DW. Table~\ref{tab:first_data} below presents information about the data processed through the ETL process.
+% % \url{https://docs.google.com/spreadsheets/d/1pGDEkCCWy2rZh-GZiiW_5n94mss0SO08C2PQQZpiG9I/edit?usp=sharing}
+% In our prototype, we collected 5 years of stock data from 2017-08 to 2022-08 in the first two iterations.
+% \begin{table}[ht]
+%     \centering
+%     \caption{Data collected (update or comment out???)}
+%     \begin{tabular}{|l|r|r|r|r|r|}
+%     \hline
+%     \textbf{Type} & \textbf{Items Total} &  \textbf{Record Total} &
+%     \textbf{Flat File Size (MB)}\\
+%     \hline
+%     Stocks & 359 & 19,910,499 & 1,228.8\\
+%     \hline
+%     Commodities & 3 & 359,316 & 26.6\\
+%     \hline
+%     Indexes & 3 & 111,900 & 8.24\\
+%     \hline
+%    \textbf{ Total }& 365 &  \textbf{20,381,715} &
+%    \textbf{1,263.64} \\
+%     \hline    
+%     \end{tabular}
+%     \label{tab:first_data}
+% \end{table} 
+% This data occupied 1.26GB of storage before being loaded into an OLTP. Stock price data is considerably larger and justifies the qualification of "big data" for our project. Our second prototype system clarifies this claim with the following measurements and projections.
+% The first ETL process collects and stores the data in MySQL OLTP DBMS. Another ETL process will be used for data transformation and uploading from OLTP into DW. In the previous iteration, the ML algorithms directly used the processed data without utilizing a DW.
+
+% In the previous prototypes, the ML algorithms used flat files and an OLTP database without utilizing the benefits of a DW. We have built upon our previous work a de-normalized DW, as described in the following subsections.
+
+% \subsection{Current implementation: data variety}
+% The current data collection and warehouse prototype has qualitative and quantitative features. 
+
+% Market metrics facts, including current and historical financial metrics for stocks, commodities, and financial indexes (current\_price, change\_percentage, change, day\_low, day\_high, year\_low, year\_high, market\_cap, price\_average\_50, price\_average\_200, volume, average\_volume, opening\_price, previous\_close). 
+% Treasury bond maturity values (m1\_month, m2\_month, m3\_month, m6\_month, m1\_year, m2\_year, m3\_year, m5\_year, m7\_year, m10\_year, m20\_year, m30\_year). 
+% Company information and ratios (symbol, beta, vol\_avg, mkt\_cap, last\_div, range, changes, company\_name, currency, cik, isin, cusip, industry, sector, country, full\_time\_employees, city, state, ipo\_date, is\_actively\_trading, eps, pe, shares\_outstanding). The DW also contains dimensions to analyze data based on date and financial instrument type.
+
+
+% Current day stock information (data, price, change\%, change, dayHigh, dayLow, yearHigh, yearLow, mktCap, exchange, open, prevClose, volume).
+% Historical Stock Information (date, open, high, low, close, adjClose, volume, unadjustedVolume, 
+% change, changePercentage, vwap, changeOverTime).
+% Bonds information (country, duration, currency, date, rate) over the past 5 years. 
+% Current day commodities (date, price, changePercentage, change, dayHigh, dayLow, yearHigh, yearLow, 
+% mktCap, exchange, open, prevClose, volume
+% Historical commodities (date, open, high, low, close, adjClose, volume, unadjustedVolume, change, changePercent, vwap, label, changeOverTime). 
+% Five commodities (copper, crude oil, gold, silver, natural gas). 
+% Company Statements (date, price, beta, volAvg, mktCap, lastDiv, changes, currency, cik, isin, 
+% cusip, exchangeFullName, exchange, industry, ceo, sect. 
+
+% These attributes are currently being used to fit our price forecasting ML model. For more accurate forecasting, we plan to use sentiment analysis data, which would help provide a more comprehensive variety of data for our system.
+
+%The inclusion of commodities and "non-technical" data related to trading, like company statements, makes our approach to warehousing and trading an accurate Big-Data approach: {\bf Volume} and {\bf on-the-fly} stocks-value prediction coupled with accurate data {\bf variety}. 
+
+% \subsection{Data volume} 
+
+% The volume of data can vary with the query and its configuration parameters, for example, up to the past 3 months' bond rates or the past 5 years of a stock's data in a single call. Moreover, queries can support up to 5 symbols (assets) simultaneously. For a conservative estimate, let us consider that the 7200 operations per day recover one record for every one of 5 symbols, which means 36,000 records per day. We have observed that data occupies about 16.8 KB for every 100 records or 172 B/record. So, on a day of operation, the data should be loaded and stored at least 5.9 MB. If the system runs 250 days of trading per year, it will accumulate a minimum of 1.44 GB for the ongoing year on 5 symbols. We also plan to recover and maintain stock data for the last 5 years, a total of 6 times 1.44 GB, that is, 8.64 GB for 5 symbols or 1.73 GB/symbol of continuous storage.
+
+% Our system will track at least 500 assets, continuously updating 6 years' data for 500 symbols. As estimated above, this represents at least 500 times 1.73 GB or 864 GB of raw data. DW-format storage requirements will boost this estimate to several terabytes.
+
+\section{DW API design for ML training and testing}
+
+\setlength{\fboxrule}{2pt}
+    	\fcolorbox{red}{white}{
+        	\parbox{0.8\linewidth}{
+         -- James and Helana, At first we need to test API access to database from Jupyter Notebook or Hub \\
+        	}
+        }\\
+
+
+Currently, the DW only contains data for 2021 to 2024, but the FMP offers a historical dataset spanning 30 years. Ideally, the DW should store the entire dataset. Estimating the DW's storage requirements for this expansion is critical to identifying storage capacity, query response times, and cost management. Furthermore, protecting the space needed to accommodate ten years of data records is essential. To estimate these requirements, the total number of records in the fact table for forty years of data must be calculated, along with the average size of a single record in the fact table. Based on the hourly grain of the fact table and the two additional records for AM and PM aggregations, 26 records are generated daily for each stock, index, and commodity \cite{SysconPaper12024ETLAutomation}. 
+% The dimensions exchange, company, and bond do not affect the record count, as they are simply attributes within the records for stock, commodity, and index.
+
+% As a result, our approach will be able to leverage massive data \textbf{volumes} for on-the-fly processing by efficient ML-based stock value predictions. It not only innovates with its many features and use of cloud computing resources but, as estimated above, also qualifies as an accurate big-data system processing large volume, variety, and (human) real-time velocity.
+\subsection{DW API design}
+With the integration of the ETL process, historical and current financial data is stored in the DW. After that, it is necessary to allow the other subsystems to access the required data seamlessly. For this purpose, we have developed an API which establishes a connection with the DW using SQLAlchemy \cite{sqlalchemy}. Along with the DW connection, API routes created using Flask provide access to required data types through their respective routes, such as stocks, financial indexes, and commodities. The core subsystem uses this API to query data from the DW based on controls provided on the web UI to filter data based on requirements. The queried data is then presented on the web UI with the help of graphs as shown in Fig.~\ref{fig: Forecast-Reporting}. 
+
+\subsection{Forecast Reporting}
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/StockForecastGraph.png}
+    \caption{An Example of DRI DBMS and ML Integration: Forecast Report for Analysis of Stock Prices of Apple, Tesla, and Microsoft}
+    \label{fig: Forecast-Reporting}
+\end{figure*}
+
+Fig.~\ref{fig: Forecast-Reporting} shows the comparison between the red line, which represents the actual stock prices, and the blue line, indicating the predicted prices over time, provides an analysis of the model’s accuracy, where periods of close alignment between the lines suggest successful prediction, while deviations indicate areas for potential improvement. This visualization highlights the model’s effectiveness in capturing general stock price movement trends while underscoring challenges in predicting specific fluctuations accurately.
+
+% After three years of experiments, we improved our prototype architecture initially described in \cite{wong2023short}:
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\columnwidth]{images/ETL-Architecture.png}
+%     \caption{ETL-Automation-Architecture}
+%     \label{fig: ETL-Architecture}
+% \end{figure}
+% % \url{https://online.visual-paradigm.com/share.jsp?id=323931393630342d34}
+
+% \setlength{\fboxrule}{2pt}
+%     	\fcolorbox{red}{white}{
+%         	\parbox{0.8\linewidth}{
+%         (Please explain modifications and differences).
+%         	}
+%         }
+ 
+% After the identification of the sources for the data, the data went directly to the feature engineering step. The first ETL process collects and stores the data in MySQL OLTP DBMS. Another ETL process will be used for ETL process data transformation and uploading from OLTP into DW for the ML analysis performance improvement. In the previous iteration, the ML algorithms directly used the processed data without utilizing a DW. 
+
+% We collected and stored data in the OLTP DBMS and prepared data for transformation into DW. Table~\ref{tab:first_data} below presents information about the data processed through the ETL process.
+% \url{https://docs.google.com/spreadsheets/d/1pGDEkCCWy2rZh-GZiiW_5n94mss0SO08C2PQQZpiG9I/edit?usp=sharing}
+% In our initial prototype, we collected 5 years of stock data from 2017-08 to 2022-08 in the first two iterations.
+% \begin{table}[ht]
+%     \centering
+%     \caption{Data collected }
+%     \begin{tabular}{|l|r|r|r|r|r|}
+%     \hline
+%     \textbf{Type} & \textbf{Items No.} &  \textbf{Total Records} &
+%     \textbf{Flat File Size (MB)}\\
+%     \hline
+%     Stocks & 359 & 19,910,499 & 1,228.8\\
+%     \hline
+%     Commodities & 3 & 359,316 & 26.6\\
+%     \hline
+%     Indexes & 3 & 111,900 & 8.24\\
+%     \hline
+%    \textbf{ Total }& 365 &  \textbf{20,381,715} &
+%    \textbf{1,263.64} \\
+%     \hline    
+%     \end{tabular}
+%     \label{tab:first_data}
+% \end{table} 
+% This data already occupies 1.26GB with flat files of 
+% company information. Transformed to a database format, it will occupy a much larger volume. Moreover, 
+% stocks trading data is considerably larger and 
+% justifies the qualification of "big data" for our 
+% project. Our second prototype system makes this 
+% claim very clearly with the following measurements 
+% and projection. 
+
+% \subsection{Second implementation: data variety}
+% The second data collection and warehouse 
+% prototype has the following qualitative and quantitative features. 
+
+% Current day stock information (data, price, change\%, change, dayHigh, dayLow, yearHigh, yearLow, mktCap, exchange, open, prevClose, volume).
+% Historical Stock Information (date, open, high, low, close, adjClose, volume, unadjustedVolume, 
+% change, changePercentage, vwap, changeOverTime).
+
+% Bonds information (country, duration, currency, date, rate) over the past 5 years. 
+
+% Current day commodities (date, price, change percentage, change, dayHigh, dayLow, year-high, yellow, 
+% mktCap, exchange, open, prevClose, volume
+% Historical commodities (date, open, high, low, close, adjClose, volume, unadjustedVolume, change, changePercent, vwap, label, changeOverTime). 
+
+% Five commodities (copper, crude oil, gold, silver, natural gas). 
+
+% Company Statements (date, price, beta, volAvg, mktCap, lastDiv, changes, currency, cik, isin, 
+% cusip, exchangeFullName, exchange, industry, CEO, sect. 
+
+% All the above data types are already 
+% used effectively by our ML-based 
+% trading algorithms (our XGBoost 
+% the model is the most efficient) 
+% and in the future, our ML-based trading 
+% algorithms will also use sentiment 
+% analysis, making our systems even 
+% more comprehensive for their data 
+% {\em variety}. 
+
+% The inclusion of commodities and 
+% "non-technical" data related to 
+% trading like company statements, 
+% makes our approach to warehousing 
+% and trading a true Big-Data approach: 
+% {\bf Volume} and {\bf on-the-fly} 
+% stocks-value prediction coupled 
+% with true data {\bf variety}. 
+
+% \subsection{Second implementation: data volume} 
+% % Quantitative clarifications given by Jacob 
+% % based on the COSC-project prototype dated 
+% % 2023-11-14 
+% This system requires to collect 
+% new data and make them available in the 
+% DW continuously. 
+% Its calls to the online data sources 
+% are limited to 300 API calls per minute 
+% or 432,000 calls within 24 hours of 
+% daily operations. From our location in 
+% B.C. Canada, and with the current implementation, it takes 7s to execute each collection query and 5s for each database insertion 
+% script. As a result, 12s are necessary and sufficient to collect and store the results of 
+% each data query (as listed above). 
+% This means our system has time to 
+% execute 7200 such query-store operations in 24 hours. 
+
+% The volume of data can vary with the query and 
+% its configuration parameters. For example, in a single call, 
+% up to the past 3 months' bond rates or the past 5 years of a stock's data. Moreover, queries can support up to 5 symbols (assets) simultaneously. For a conservative estimate, let us 
+% consider that the 7200 operations per day 
+% recover one record for every one of 5 symbols, 
+% which means 36000 records per day. 
+% We have observed that data occupies about 16.8KB for every 100 records or 172B/record. 
+% So, on a day of operation, the data should be loaded and stored at the 
+% very least 5,9MB. 
+% If the system is running 250 days of trading per 
+% year, it will, therefore, accumulate a minimum of 
+% 1,44GB for the ongoing year on 5 symbols. 
+% We also plan to recover and maintain stock data 
+% for the last 5 years, a total of 6 times 1,44GB, 
+% that is 8,64GB for 5 symbols or 1,73GB/symbol of 
+% continuous storage. 
+
+
+% %As detailed above, one-day data for 
+% %one stock is a vector of 13 numbers. 
+% %If they are 32-byte  
+% %floating-point numbers, the vector 
+% %represents 52 Bytes. And if 
+% % There are 250 trading 
+% %days per year, the query can thus 
+% %return 52*250 = 13,000 Bytes of data 
+% %or approximately 12kB. 
+% %Assuming that 7200 such queries can 
+% %be made in 24hrs of operation, our 
+% %system could collect 84MB/day. If 
+% %our systems is itself running 250 
+% %days per year, it will, therefore 
+% %collect about 20GB per year. 
+
+% Our system is planned to track at least 500 assets 
+% so that means continuously updating 6 years' worth 
+% of data for 500 symbols. As estimated above, this 
+% represents at the very least 500 times 1,73GB or 
+% 864GB or raw data. 
+% Database-format storage requirements 
+% will boost this estimate 
+% to several terabytes. 
+
+% As a result, our approach will be 
+% able to leverage huge data 
+% {\em volumes} for on-the-fly 
+% processing by efficient ML-based 
+% stocks-value predictions. 
+% It not only innovates by its many features and 
+% use of cloud computing resources, but as estimated 
+% above also qualifies as a true big-data system 
+% processing large volume and variety with (human) real-time velocity. 
+
+% \section{Performance Evaluation and Optimization}
+
+The underlying hardware infrastructure significantly influences the performance of each subsystem. For example, storage drives with high Input/Output Operations Per Second (IOPS) can drastically improve the access time to the DW \cite{haas2023modern}. In contrast, GPUs with higher CUDA cores accelerate ML training and prediction tasks \cite{acun2021understanding}. In the project's current phase, we are utilizing the hardware resources available within our Computer Science Department, which are sufficient for our limited-scale deployment. However, as the system is migrated to the Cloud, we will be able to scale both the volume of data processed and the frequency of predictions, leading to further optimizations and improvements in performance.
+
+
+
+% Through extensive testing, we identified that the most significant performance bottlenecks arise during the ETL process and from the design of the DW schema. The efficiency of the ETL process, particularly the speed at which data is fetched, transformed, and loaded, directly impacts the performance of downstream systems like the ML model. Moreover, the DW schema design is crucial in optimizing the access time to data required for model training.
+
+% In the previous system version, the database was designed using an OLTP (Online Transaction Processing) model, which utilized normalized tables for each type of financial data. This design posed several performance challenges, particularly when preparing data for ML model training. Specifically, fetching data from multiple normalized tables and performing on-the-fly aggregation to fit the required training data frame significantly increased processing time as the volume of financial data grew. This approach was inefficient and added unnecessary complexity to the integration of subsystems.
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=\columnwidth]{images/OLTP-Training.jpg}
+%     \caption{Data Fetching and Aggregation in OLTP Design for ML Model Training}
+%     \label{fig: OLTP-Training}
+% \end{figure}
+% % \url{https://online.visual-paradigm.com/w/kasoocaj/diagrams/#diagram:workspace=kasoocaj&proj=0&id=9&type=SystemContextDiagram}
+
+
+
+We re-designed the DW, implementing a star schema for efficient data querying. This schema is tailored to the needs of our ML algorithm, ensuring that the data is pre-aggregated and ready for use. This process eliminates the need for real-time aggregation during model training, as all required aggregations are handled during the ETL process, and the data is ready for consumption as a training dataset. This design reduces the need to join multiple data from tables and improves the overall efficiency of the ETL process, leading to a simpler API to provide data access for ML model training. The updated workflow can be seen in Fig.~\ref{fig: DW-Training}, modelled after the work from \cite{nobre2019combining}.
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/DWTraining}
+    \caption{Data Fetching and Aggregation in Star Schema Design for ML Model Training}
+    \label{fig: DW-Training}
+\end{figure*}
+% \url{https://online.visual-paradigm.com/w/kasoocaj/diagrams/#diagram:workspace=kasoocaj&proj=0&id=10&type=SystemContextDiagram}
+
+
+
+% We conducted performance evaluations by measuring the time to prepare the training data set for the ML model. The results of this comparison between the OLTP design and the optimized star schema design are summarized in Table~\ref{tab: perf_comp}. These measurements provide valuable insights into the performance improvements achieved with the new schema design.
+
+% \begin{table}[ht]
+%     \centering
+%     \caption{ Time to prepare OLTP data for ML training}
+%     \begin{tabular}{|l|r|r|r|r|r|}
+%     \hline
+%     \textbf{Source} & \textbf{\makecell{Tables\\Accessed}} & \textbf{\makecell{Total\\Records}} &  \textbf{\makecell{Time\\to Fetch}} &
+%     \textbf{Total time}\\
+%     \hline
+%     OLTP & 0 & 0 & 0 & 0\\
+%     \hline
+%     DW & 0 & 0 & 0 & 0\\
+%     \hline
+%    \textit{\textbf{Difference}} & 0 & 0 & 0 & 0\\
+%     \hline    
+%     \end{tabular}
+%     \label{tab: perf_comp}
+% \end{table}
+
+% %The results show...
+% \textbf{Add Results}
+
+
+% We anticipate further performance improvements as we transition to the Cloud for increased scalability. The cloud environment will provide access to more powerful hardware resources, including faster storage, more powerful GPUs, and greater computational capacity for parallel processing. These advancements will enable us to process larger datasets, increase the frequency of model predictions, and handle more complex machine-learning algorithms at scale. 
+
+
+\section{Future Works}
+
+\setlength{\fboxrule}{2pt}
+% This ETL and Automation system prototype can be used alongside the ML algorithm as a better data pipeline for forecasting. 
+In future research, we will use 30 years of financial data for the training and testing models. DRA provides production performance training and offers an array of cutting-edge tools and resources that are crucial for enhancing the scope and impact of our research. The DRAC supports researchers across various fields by providing access to high-performance computing, data storage, and specialized software platforms that facilitate large-scale data analysis, computational modelling, and collaborative research. In support of our initiative, our team has been honoured to be selected as part of the DRI Champions Program \cite{drichamp}. This includes a research grant for 2024--2025, from which a portion of the funding is specifically allocated to promoting the DRI, supporting research activities, and providing resources to facilitate this project's continued development and growth.
+
+\section{CONCLUSION}
+Our research paper demonstrated a DW utilization to efficiently and continuously prepare data for practical real-time data analysis and forecasting with ML algorithms, which we developed and tested in our previous research work \cite{Wong2022algoritmic,Wong2023Forecasting, Wong2023ShortTerm,Wong2022,wong2023short,Wong2023}. This paper discussed extraction, transformation, and loading process automation and the design and development of subsystems’ integration for algorithmic trading ML modelling. Additionally, we discussed the design and implementation of the API, which is used by the core subsystem to access the DW.
+
+% Additionally, we discussed performance optimization for the suggested automated systems. 
+
+% This research has delved into the vital domain of data warehousing and, more specifically, the pivotal role of ETL (Extract, Transform, Load) processes for efficient data management and utilization. Our exploration has been driven by the need to integrate ETL automation with algorithmic trading algorithms seamlessly. This combination holds immense potential in the evolving landscape of financial markets and other time-series-driven applications. This integration promises to provide a reliable way to collect, process, and leverage financial data for algorithmic decision-making.
+
+% Automation in ETL processes and data transformation from external sources, uploading in OLTP DBMS and then transforming into DW, is a game-changer. It allows organizations to streamline their data operations, increase efficiency, and enhance data quality. Automating data extraction, cleansing, transformation, and job scheduling is essential for maintaining a competitive edge in today's data-driven landscape.
+
+Moreover, our research has emphasized that the architecture and design of an ETL system are pivotal in data warehousing. Our system exemplifies the importance of a well-structured and versatile design. Its current prototype implementations have already demonstrated large data volumes, a variety of data types, and on-the-fly processing coupled with the stocks-price prediction systems that have already been demonstrated in our previous publications. 
+
+
+
+\section*{Acknowledgements}
+% We thank Okanagan College, the OC's Grant in Aid Committee, for the funding and financial support for the applied student research projects. We are grateful for the funding from Langara College under the Work On Campus (WOC) program, which made some 6 research projects feasible. In addition, we are equally grateful for the Post-Degree Diploma Program in Data Analytics at Langara College. The program provided two capstone project teams that moved the modelling work forward. We would also like to thank  ... Veem (?) for supporting us in our educational process, including our research and student projects. The following Okanagan College students have conducted the second prototype implementation, and we thank them for their contribution: Jacob Rawlings, Ben Carrier and...
+
+We thank Okanagan College and the OC’s GIA Committee for funding and financial support of the applied student research projects. Additionally, we would like to thank the DRA of Canada for the DRI Champions Award.
+
+This work would not have been possible without the dedication and contributions of the students from Okanagan College, who were instrumental in developing various components, including ETL, database design, data collection, sanitization, and documentation. Key contributors include Jake Fischer, Jacob Rawlings, Alan Abdollahzadeh, Vanessa Dubouzet, Ben Carrier, Dominic Presch, Devon Volberg, Dylan Soares, Jaeden Soukoroff, Jacob Labelle, Parker Green, Dakota Flath, William (Noah) Blake, Yuan Hu, and Isaac Lengacher-Bergeron. Their efforts in earlier iterations and technical development, particularly by Nassi Ebadifard, Dakota Joiner, and Amy Vezeau, were vital to the success of this project. We also thank Dr. Vladimir Ryjov for providing technical insights and guidance throughout the research process for the previous version of prototype development in the Winter of 2024.
+
+% \setlength{\fboxrule}{2pt}
+%     	\fcolorbox{red}{white}{
+%         	\parbox{0.8\linewidth}{
+%         -- Please add the name of other acknowledgements.}
+%         }
+
+% Finally, the authors would like to thank the reviewers for their valuable comments, which helped improve this paper.
+
+%%
+%% Print the bibliography
+%%
+% \printbibliography
+
+%%
+%% If your work has an appendix, this is the place to put it.
+% \appendix
+
+% \section{Research Methods}
+% \subsection{Part One}
+% \subsection{Part Two}
+
+% \section{Online Resources -$>$ \textbf{move them to references -$>$ added to bib, Where to cite?}}
+% \begin{enumerate}
+%    \item Open Encrypt project: \href{http://openencryption.sourceforge.net/}{http://openencryption.sourceforge.net/}
+%    \item Natural Sciences and Engineering Research Council of Canada  \href{https://www.nserc-crsng.gc.ca/NSERC-CRSNG/Index_eng.asp}{https://www.nserc-crsng.gc.ca/NSERC-CRSNG/Index\_eng.asp}
+% \end{enumerate}
+
+\balance
+
+\bibliographystyle{IEEEtran}
+
+\bibliography{AlgTr.bib, 2tempBIB.bib, 1tempBIB.bib}
+
+\end{document}
